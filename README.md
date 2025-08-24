@@ -76,4 +76,10 @@ Categories will be identified using infobox type, if present. If not enough arti
 
 We will address data imbalance by paring down the dataset to 150,000 each for each of the 3 categories.
 
+*Where does your model fit in the fitting graph? (Build at least one model with different hyperparameters and check for over/underfitting, pick the best model).* 
+
+*What are the next models you are thinking of and why?*
+
+*What is the conclusion of your 1st model? What can be done to possibly improve it?*
+
 
