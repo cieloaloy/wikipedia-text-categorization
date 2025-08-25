@@ -65,7 +65,7 @@ Important features for this project are ***bolded and italicized*** in the table
 There are frequent missing values from the dataset, as not all articles are as detailed or complicated as others. There are few duplicates in the dataset since Wikipedia adheres to a unique ID system, but we will still check to see that unique articles weren't captured or linked to twice.
 
 ## Data Plots
-[Link to jupyter notebook containing code and plots](wiki-model.ipynb) 
+The data is explored in the `Data Plots` section of the [notebook](wiki-model.ipynb) .
 
 
 ## Data Preprocessing
@@ -76,10 +76,18 @@ Categories will be identified using infobox type, if present. If not enough arti
 
 We will address data imbalance by paring down the dataset to 150,000 each for each of the 3 categories.
 
-*Where does your model fit in the fitting graph? (Build at least one model with different hyperparameters and check for over/underfitting, pick the best model).* 
+## Naive Bayes Model Performance
+
+*Where does your model fit in the fitting graph?*
+
+The initial model seems appropriately fit. This question is investigated in the `Testing different parameters` section of the [notebook](wiki-model.ipynb).
+
+*What is the conclusion of your 1st model? What can be done to possibly improve it?*
+
+The Naive Bayes model ended up surprisingly more accurate than anticipated. Tuning the model with different n-gram parameters proved to be an effective exploration of other strategies, and the model using only bigrams showed the best results. The best model achieved a training accuracy score of `0.818` and a testing accuracy score of `0.777`. For further improvement, we could look at tuning the regularization parameter `alpha`, which we didn't test at all. 
 
 *What are the next models you are thinking of and why?*
 
-*What is the conclusion of your 1st model? What can be done to possibly improve it?*
+While the Naive Bayes model was chosen first for its simplicity and ease of text classification, our next model of choice is the Linear SVM. In Naive Bayes, the model assumes that all words are independent, which is not at all a true feature of language. For this reason, an SVM would recognize the relationships between words much better, and classify the text much more realistically for actual language, making significant improvements on this project's text classification abilities.
 
 
