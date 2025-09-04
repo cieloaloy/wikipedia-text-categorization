@@ -42,6 +42,8 @@ For the environment, let's use the following:
 
 ### Data Exploration
 
+I will explore the data using the above environment, specifically `seaborn` to view some visualizations of numerical data.
+
 *How many observations does your dataset have?*
 
 The English article dataset contains approximately 6.9 million observations. This dataset is 79.6 GB uncompressed. For the final project, we will elect to deal with only 600,000 articles. 
@@ -76,7 +78,25 @@ Important features for this project are ***bolded and italicized*** in the table
 
 There are frequent missing values from the dataset, as not all articles are as detailed or complicated as others. There are few duplicates in the dataset since Wikipedia adheres to a unique ID system, but I will still check to see that unique articles weren't captured or linked to twice.
 
-### Data Plots
+### Data Preprocessing
+
+*How will you preprocess your data? Handle data imbalance if needed.*
+
+Categories will be identified using infobox type, if present. If not enough articles contain this data point, I will accumulate more by filtering the article abstracts with a list of keywords pertaining to each subject.
+
+I will address data imbalance by paring down the dataset to 150,000 each for each of the 3 categories.
+
+### Naive Bayes - Model 1
+
+For initial experimentation, I have chosen to use a Naive Bayes model implemented with the `sklearn` library. The model will use TF-IDF for text categorization. For parameter tuning, let's implement 3 separate models with different choices for the `n-gram` parameter.
+
+### Support Vector Machine - Model 2
+
+For further exploration, I have chosen to use a Support Vector Machine implemented with the `sklearn` library. The model will use TF-IDF for text categorization. Again for similar comparison, let's implement 3 separate models with different choices for the `n-gram` parameter.
+
+# Results
+
+### Data Exploration
 
 ![title lengths](images/image.png)
 
@@ -86,23 +106,17 @@ The lengths of article titles are frequently between 5 and 50 characters long. T
 
 The lengths of abstracts are frequently between 0 and 1000 characters, dropping off after that. The longest samples are around 5000 characters in length.
 
-### Data Preprocessing
+### Preprocessing
 
-*How will you preprocess your data? Handle data imbalance if needed.*
+I preprocessed the dataset by imputing missing text with empty strings, assigning categorical labels as ints mostly using related infobox keywords, and dropping all columns except `name`, `abstract`, and a new column designating category, `idx`. The finished json file meets the goal of 150,000 articles per category. Here's an example of an article after preprocessing,
 
-Categories will be identified using infobox type, if present. If not enough articles contain this data point, I will accumulate more by filtering the article abstracts with a list of keywords pertaining to each subject.
-
-I will address data imbalance by paring down the dataset to 150,000 each for each of the 3 categories.
-
-### Model 1
-
-For initial experimentation, I have chosen to use a Naive Bayes model implemented with the `sklearn` library. The model will use TF-IDF for text categorization. For parameter tuning, let's implement 3 separate models with different choices for the `n-gram` parameter.
-
-### Model 2
-
-For further exploration, I have chosen to use a Support Vector Machine implemented with the `sklearn` library. The model will use TF-IDF for text categorization. Again for similar comparison, let's implement 3 separate models with different choices for the `n-gram` parameter.
-
-# Results
+```
+{
+    "name": "List of association football families", 
+    "abstract": "This is a list of association football families. The countries are listed according to the national teams of the senior family member if the other family member played for a different country. If the senior members of the given member did not play international football, the family will be listed according to nationality.\n  - Families included on the list must have\n  - \n  - at least, one member of the family is capped by a national team on the senior level or an important person in the game of football\n  - a second member must be a professional player or capped by a national team on the senior level.", 
+    "idx": 1
+}
+```
 
 ## Naive Bayes Model Performance
 
@@ -129,15 +143,29 @@ For further exploration, I have chosen to use a Support Vector Machine implement
 ![svm bigram accuracy](images/image-7.png)
 
 # Discussion
+
+### Data Exploration
+
+In the future I would certainly investigate if article lengths (and the lengths of titles or abstracts) are correlated to categories. I would also like to learn some more ways to plot the data visually.
+
+### Preprocessing
+
+Admittedly, I think this step contains my greatest mistakes of the project. I opted to work with the dataset locally on my machine, which ended up taking an unbelievably longer time than I imagined. Downloading, uploading, and processing took several hours each during this step, so I was keen to finish it as soon as possible. In doing this, I think my method of finding category-related keywords in order to categorize articles wasn't the most accurate choice of initial categorization, but it helped me finish this step on time. In the future, I would manually categorize a small subset of the data myself, then train the model on this and keep refining it until it can categorize articles by itself with semi-supervision.
+
+### Naive Bayes Discussion
 *Where does your model fit in the fitting graph?*
 
-The initial Naive Bayes model seems appropriately fit. This question is investigated in the `Testing different parameters` section of the [notebook](wiki-model.ipynb).
+I'm satisfied with the accuracy scores given that this model is the first attempt for this project. The training error and testing error are similar in value, indicating that the model can handle unseen data almost just as well as training data. 
+
+The bigram-only model seems to have the best performance metrics of the three models, while the unigram-only model is worst. Intuitively, this makes sense, as multiple-word-long phrases tend to be more specific than isolated words. I am somewhat skeptical of how all three models have near-similar metrics, and all seem appropriately fit. 
+
+One interesting thing to note from the classification report is that articles with `idx=2`, aka the STEM category, have the highest precision and recall. I theorize that this is due to the preprocessing steps choosing articles in order by category. I thought I addressed data imbalance by choosing exactly 150,000 articles from each category, but it seems that `idx=0` (art/entertainment) articles are classified somewhat more generically since they were chosen from the dataset first. If I were to redo this project from the beginning, I would definitely further address data imbalance by categorizing articles **without** ordering the categories in a specific way.
 
 *What are the next models you are thinking of and why?*
 
 While the Naive Bayes model was chosen first for its simplicity and ease of text classification, our next model of choice is the Linear SVM. In Naive Bayes, the model assumes that all words are independent, which is not at all a true feature of language. For this reason, an SVM would recognize the relationships between words much better, and classify the text much more realistically for actual language, making significant improvements on this project's text classification abilities.
 
-
+### SVM Discussion
 
 *Where does your model fit in the fitting graph?*
 
@@ -156,6 +184,8 @@ The Naive Bayes model ended up surprisingly more accurate than anticipated. Tuni
 *What is the conclusion of your 2nd model? What can be done to possibly improve it?*
 
 The attempt at Support Vector Machine models outperformed the Naive Bayes classifiers by having consistently better metrics, and keeping this consistency even across changes in n-gram parameters. The best model achieved a training accuracy score of `0.889` and a testing accuracy score of `0.810`. Every SVM model outperformed every Naive Bayes classifier.
+
+As a whole, I think the project was successful both for my learning of this niche aspect of Machine Learning, and that the models were successful despite my errors in preprocessing.
 
 
 # Statement of Collaboration
