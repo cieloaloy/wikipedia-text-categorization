@@ -78,11 +78,11 @@ There are frequent missing values from the dataset, as not all articles are as d
 
 ### Data Plots
 
-![title lengths](image.png)
+![title lengths](images/image.png)
 
 The lengths of article titles are frequently between 5 and 50 characters long. Their range is from 0 to 100.
 
-![abstract lengths](image-1.png)
+![abstract lengths](images/image-1.png)
 
 The lengths of abstracts are frequently between 0 and 1000 characters, dropping off after that. The longest samples are around 5000 characters in length.
 
@@ -106,27 +106,27 @@ For further exploration, I have chosen to use a Support Vector Machine implement
 
 ## Naive Bayes Model Performance
 
-![naive bayes accuracy precision recall](image-2.png)
+![naive bayes accuracy precision recall](images/image-2.png)
 
 ## Unigram-only NB Performance (ngrams = (1,1))
 
-![nb unigram accuracy](image-3.png)
+![nb unigram accuracy](images/image-3.png)
 
 ## Bigram-only NB Performance (ngrams = (2,2))
 
-![nb bigram accuracy](image-4.png)
+![nb bigram accuracy](images/image-4.png)
 
 ## Support Vector Machine Model Performance
 
-![support vector machine accuracy](image-5.png)
+![support vector machine accuracy](images/image-5.png)
 
 ## Unigram-only SVM Performance (ngrams = (1,1))
 
-![svm unigram accuracy](image-6.png)
+![svm unigram accuracy](images/image-6.png)
 
 ## Bigram-only SVM Performance (ngrams = (2,2))
 
-![svm bigram accuracy](image-7.png)
+![svm bigram accuracy](images/image-7.png)
 
 # Discussion
 *Where does your model fit in the fitting graph?*
